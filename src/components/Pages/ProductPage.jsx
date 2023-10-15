@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Announce from "../Announce";
 import Navbar from "../Navbar";
 import Newsletter from "../Newsletter";
 import Footer from "../Footer";
 import Counter from "../Counter";
-function ProductPage() {
+import { useLocation } from "react-router-dom";
+import  { Cartitems } from "../../componentApi/CartItems";
+
+function ProductPage({addtocart}) {
+
+  const location=useLocation();
+  const data=location.state;
+  const [price,setPrice]=useState(data.price);
+  const fixprice=data.price;
+  const[addcart,setAddcart]=useState(false);
   return (
     <div>
       <Announce />
@@ -12,12 +21,12 @@ function ProductPage() {
       <div className="flex justify-center mb-7 mobile:flex-col mt-3 p-2">
         <div className="flex-1 flex items-center justify-center">
           <img
-            src="https://cdn.shopify.com/s/files/1/0240/7285/products/KNITPULLOVER-PISTACHIO-2_360x.jpg?v=1642545216"
+            src={data.src}
             alt="Product-img"
           />
         </div>
         <div className="flex-[1.3] flex flex-col items-start justify-item-center mt-10 mobile:mt-5">
-          <h1 className="title text-[40px] mobile:text-[30px] ">Cream Hoody Orignal</h1>
+          <h1 className="title text-[40px] mobile:text-[30px] ">{data.color} Hoody Original</h1>
           <p className="description pr-[4rem] text-justify mt-4 mobile:pr-0">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae
             harum et quos reprehenderit voluptatibus at accusantium labore
@@ -26,7 +35,7 @@ function ProductPage() {
           </p>
           <div className="flex flex-col place-self-start">
             <p className="mt-7 text-3xl">
-              Price: <b>$70</b>
+              Price: <b>{price}</b>
             </p>
 
             <div className="colors flex mt-7 text-2xl mobile:hidden">
@@ -45,10 +54,10 @@ function ProductPage() {
                 </select>
             </div>
             <div className="mt-7">
-                <Counter/>
+                <Counter setprice={setPrice} price={price} fixp={fixprice}/>
             </div>
           </div>
-          <button className="btn">Add to Cart</button>
+          <button className="btn" onClick={()=>addtocart(data)}>Add to Cart</button>
         </div>
       </div>
       <Newsletter />

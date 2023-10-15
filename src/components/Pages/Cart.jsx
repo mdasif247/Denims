@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Announce from "../Announce";
 import Navbar from "../Navbar";
 import Newsletter from "../Newsletter";
 import Footer from "../Footer";
 import Counter from "../Counter"
-const Cart = () => {
+import CartCounter from '../CartCounter'
+const Cart = ({items}) => {
+  const[citems,setCitems]=useState([...items]);
+  const[cprice,setCprice]=useState(items.map((it)=>it.price));
   const SummaryItemStyle = "SummaryItem flex justify-between mt-3 w-[100%]";
-  const ProductDivStyle = "flex w-[100%] h-auto items-center mobile:flex-col";
+  const ProductDivStyle = "flex w-[100%] h-auto items-center mb-3 mobile:flex-col";
   const PriceQuantityStyle =
     "flex-auto flex flex-col justify-center items-center mobile:mt-7 mobile:mb-7";
+  var sum=0;
+  citems.map((cit)=>sum+=cit.price);
   return (
     <div>
       <Announce />
@@ -22,7 +27,7 @@ const Cart = () => {
             Continue Shopping
           </button>
           <div className="flex underline text-lg hover:cursor-pointer mobile:m-5">
-            <p>Items in your Cart: 3</p>
+            <p>Items in your Cart: {items.length}</p>
             <p className="ml-5">Whishlist Items: 0</p>
           </div>
           <button className="btn mt-0">Checkout Now</button>
@@ -33,24 +38,26 @@ const Cart = () => {
           {/* product div */}
           <div className="flex flex-col flex-1">
             {/* 1st product div */}
-            <div className={ProductDivStyle}>
+            {citems.map((item,index)=>
+            
+            <div className={ProductDivStyle} key={index}>
               <div className=" product flex pl-5 self-start">
                 <img
                   className="product_img w-[7rem]"
-                  src="https://cdn.shopify.com/s/files/1/0240/7285/products/WithinYourselfLongSleeveT-ShirtinElectricBlue04_360x.jpg?v=1642719824"
+                  src={item.src}
                   alt="product_img"
                 />
 
                 <div className="disc flex items-start justify-between h-auto flex-col ml-6">
                   <p>
-                    <b className="mr-2">ID:</b>123456789
+                    <b className="mr-2">ID:</b>1234
                   </p>
                   <p>
-                    <b className="mr-2">Product:</b>Dazzing Sky Shirt
+                    <b className="mr-2">Product:</b>{item.color} Hoody Original
                   </p>
                   <p className="flex items-center justify-center">
                     <b className="mr-2">Color:</b>
-                    <div className="colorSelect bg-sky-500 ml-1 w-[20px] h-[20px]"></div>
+                    <div className="colorSelect ml-1 w-[20px] h-[20px]">{item.color}</div>
                   </p>
                   <p>
                     <b className="mr-2">Size:</b>M
@@ -60,91 +67,21 @@ const Cart = () => {
 
               {/*Price and Quantity Div*/}
               <div className={PriceQuantityStyle}>
-                <Counter />
+                <CartCounter citem={item} citems={citems} setCitems={setCitems} ind={index} fixp={cprice[index]}/>
                 <p className="flex items-center justify-center text-4xl mt-3">
-                  <b>70$</b>
+                  <b>{item.price}$</b>
                 </p>
               </div>
             </div>
+            )}
 
             <hr className="mb-7 mt-7 mobile:mt-0" />
-            {/* 2nd product div */}
-            <div className={ProductDivStyle}>
-              <div className=" product flex pl-5 self-start">
-                <img
-                  className="product_img w-[7rem]"
-                  src="https://cdn.shopify.com/s/files/1/0240/7285/products/WithinYourselfLongSleeveT-ShirtinElectricBlue04_360x.jpg?v=1642719824"
-                  alt="product_img"
-                />
-
-                <div className="disc flex items-start justify-between h-auto flex-col ml-6">
-                  <p>
-                    <b className="mr-2">ID:</b>123456789
-                  </p>
-                  <p>
-                    <b className="mr-2">Product:</b>Dazzing Sky Shirt
-                  </p>
-                  <p className="flex items-center justify-center">
-                    <b className="mr-2">Color:</b>
-                    <div className="colorSelect bg-sky-500 ml-1 w-[20px] h-[20px]"></div>
-                  </p>
-                  <p>
-                    <b className="mr-2">Size:</b>M
-                  </p>
-                </div>
-              </div>
-
-              {/*Price and Quantity Div*/}
-              <div className={PriceQuantityStyle}>
-                <Counter />
-                <p className="flex items-center justify-center text-4xl mt-3">
-                  <b>70$</b>
-                </p>
-              </div>
             </div>
-            <hr className="mb-7 mt-7 mobile:mt-0" />
-
-            {/* 3rd Product */}
-            <div className={ProductDivStyle}>
-              <div className=" product flex pl-5 self-start">
-                <img
-                  className="product_img w-[7rem]"
-                  src="https://cdn.shopify.com/s/files/1/0240/7285/products/WithinYourselfLongSleeveT-ShirtinElectricBlue04_360x.jpg?v=1642719824"
-                  alt="product_img"
-                />
-
-                <div className="disc flex items-start justify-between h-auto flex-col ml-6">
-                  <p>
-                    <b className="mr-2">ID:</b>123456789
-                  </p>
-                  <p>
-                    <b className="mr-2">Product:</b>Dazzing Sky Shirt
-                  </p>
-                  <p className="flex items-center justify-center">
-                    <b className="mr-2">Color:</b>
-                    <div className="colorSelect bg-sky-500 ml-1 w-[20px] h-[20px]"></div>
-                  </p>
-                  <p>
-                    <b className="mr-2">Size:</b>M
-                  </p>
-                </div>
-              </div>
-
-              {/*Price and Quantity Div*/}
-              <div className={PriceQuantityStyle}>
-                <Counter />
-                <p className="flex items-center justify-center text-4xl mt-3">
-                  <b>70$</b>
-                </p>
-              </div>
-            </div>
-              <hr className="mb-7 mt-7 mobile:mt-0" />
-          </div>
-          <div className="Summary flex-[0.4] flex flex-col items-center w-auto h-[40vh] border-2 border-[#8a4af3] rounded-md shadow-lg p-5 text-lg mobile:mb-6">
+          {items.length>0?<div className="Summary flex-[0.4] flex flex-col items-center w-auto h-[40vh] border-2 border-[#8a4af3] rounded-md shadow-lg p-5 text-lg mobile:mb-6">
             <h1 className="text-[2rem]">SUMMARY</h1>
             <div className={SummaryItemStyle}>
               <p>SubTotal:</p>
-              <p>$140</p>
+              <p>${sum}</p>
             </div>
             <div className={SummaryItemStyle}>
               <p>Shipping:</p>
@@ -156,9 +93,9 @@ const Cart = () => {
             </div>
             <div className={SummaryItemStyle + " text-3xl font-bold"}>
               <p>Total:</p>
-              <p>$140</p>
+              <p>${sum}</p>
             </div>
-          </div>
+          </div> : <div className="text-[30px] font-bold block ml-auto mr-auto">No items in the cart</div>}
         </div>
         <Newsletter />
         <Footer />
